@@ -9,15 +9,19 @@
   padding: 0;
 }
 
+.correctAnswer {
+  color: green;
+  font-size: 1rem;
+}
 /* buttons */
 .answerBtn {
   border: none;
   color: white;
-  background-color: rgb(171, 165, 165);
+  background-color: rgb(122, 117, 117);
   height: 50px;
 }
 .guess {
-  background-color: rgb(69, 63, 63);
+  background-color: rgb(41, 109, 173);
 }
 
 .correct {
