@@ -1,4 +1,8 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 2rem 5rem;
+  text-align: center;
+  padding: 1rem 0;
+  background-color: #5585b5;
+  color: #ffffff;
 }

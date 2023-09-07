@@ -1,3 +1,7 @@
+.quizContainer {
+  padding-bottom: 2rem;
+}
+
 .question {
   font-size: 1.25rem;
 }
@@ -10,14 +14,14 @@
 }
 
 .correctAnswer {
-  color: green;
+  color: rgb(6, 53, 6);
   font-size: 1rem;
 }
 /* buttons */
 .answerBtn {
   border: none;
   color: white;
-  background-color: rgb(122, 117, 117);
+  background-color: #79c2d0;
   height: 50px;
 }
 .guess {
@@ -25,7 +29,7 @@
 }
 
 .correct {
-  background-color: rgb(57, 162, 57);
+  background-color: rgb(113, 178, 113);
 }
 
 .incorrect {
@@ -36,10 +40,10 @@
   text-align: center;
 }
 .btn {
-  background-color: rgb(82, 122, 210);
+  background-color: #53a8b6;
   border: none;
   padding: 1rem;
-  margin-top: 1rem;
+  font-size: 1.15rem;
   color: white;
 }
 .btn:hover {
@@ -48,4 +52,10 @@
 
 .scoreContainer {
   text-align: center;
+}
+
+.score {
+  font-size: 1.5rem;
+  color: rgb(255, 255, 255);
+  padding-bottom: 2rem;
 }
