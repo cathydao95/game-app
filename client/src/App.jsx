@@ -7,9 +7,11 @@ function App() {
     category: "general",
     difficulty: "easy",
   });
+  const [isPlaying, setIsPlaying] = useState(false);
   const [quiz, setQuiz] = useState();
   const [correctAnswers, setCorrectAnswers] = useState([]);
 
+  // get code for categories
   const categories = {
     general: 9,
     television: 14,
@@ -18,12 +20,14 @@ function App() {
     history: 23,
   };
 
+  // set quiz option selections
   const selectOptions = (e) => {
     setOptions((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
   };
 
+  // fetch quiz questions
   const getQuizQuestions = async (e) => {
     e.preventDefault();
     let url;
@@ -37,8 +41,6 @@ function App() {
     console.log(url);
     const response = await fetch(url);
     const quizData = await response.json();
-    console.log("quizData", quizData);
-    console.log(quizData.data.results);
     // get correct answers from questions
     let correctArray = [];
     quizData.data.results.map((question) =>
@@ -47,14 +49,24 @@ function App() {
     // set quiz and correct answers array
     setQuiz(quizData.data.results);
     setCorrectAnswers(correctArray);
+    setIsPlaying(true);
   };
 
-  console.log("quiz", quiz, "correct", correctAnswers);
   return (
     <>
       <h1>Trivia</h1>
-      <Form selectOptions={selectOptions} getQuizQuestions={getQuizQuestions} />
-      {quiz && <Questions quiz={quiz} correctAnswers={correctAnswers} />}
+      {isPlaying ? (
+        <Questions
+          quiz={quiz}
+          correctAnswers={correctAnswers}
+          setIsPlaying={setIsPlaying}
+        />
+      ) : (
+        <Form
+          selectOptions={selectOptions}
+          getQuizQuestions={getQuizQuestions}
+        />
+      )}
     </>
   );
 }
