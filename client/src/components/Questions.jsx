@@ -17,6 +17,24 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
     return array;
   };
 
+  // REMOTE HTML ENTITY CODES
+  function removeHtmlEntities(input) {
+    // Define a regular expression pattern to match HTML entity codes
+    const entityPattern = /&#[0-9]+;|&quot;/g;
+
+    // Use the replace method to remove HTML entity codes and decode &quot;
+    const cleanedText = input.replace(entityPattern, (match) => {
+      if (match === "&quot;") {
+        return '"';
+      } else {
+        // For other HTML entities, remove them
+        return "";
+      }
+    });
+
+    return cleanedText;
+  }
+
   useEffect(() => {
     let answers = quiz.map((quizQuestion) => {
       const { correct_answer, incorrect_answers } = quizQuestion;
@@ -71,10 +89,13 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
         {randomizedAnswers.map((answers, index) => {
           return (
             <div key={index}>
-              <h3 className="question">{quiz[index].question}</h3>
+              <h3 className="question">
+                {removeHtmlEntities(quiz[index].question)}
+              </h3>
               {quizSubmitted && (
                 <p className="correctAnswer">
-                  Correct Answer: {quiz[index].correct_answer}
+                  Correct Answer:{" "}
+                  {removeHtmlEntities(quiz[index].correct_answer)}
                 </p>
               )}
               <div>
@@ -99,7 +120,7 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
                         }  `}
                         onClick={(event) => selectGuess(event, index)}
                       >
-                        {answer}
+                        {removeHtmlEntities(answer)}
                       </button>
                     );
                   })}
