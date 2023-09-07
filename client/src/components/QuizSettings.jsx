@@ -1,5 +1,5 @@
 import React from "react";
-import "./Form.css";
+import "./QuizSettings.css";
 
 const Form = ({ selectOptions, getQuizQuestions }) => {
   return (
