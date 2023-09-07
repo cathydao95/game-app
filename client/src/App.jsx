@@ -27,17 +27,15 @@ function App() {
     });
   };
 
+  console.log(options);
   // fetch quiz questions
   const getQuizQuestions = async (e) => {
     e.preventDefault();
-    let url;
-    if (options.category === "any") {
-      url = `http://localhost:3000/api/trivia/?amount=5&difficulty=${options.difficulty}&type=multiple`;
-    } else {
-      url = `http://localhost:3000/api/trivia/?amount=5&category=${
-        categories[options.category]
-      }&difficulty=${options.difficulty}&type=multiple`;
+    let url = `http://localhost:3000/api/trivia/?amount=5&difficulty=${options.difficulty}&type=multiple`;
+    if (options.category !== "any") {
+      url += `&category=${categories[options.category]}`;
     }
+
     const response = await fetch(url);
     const quizData = await response.json();
     // get correct answers from questions
