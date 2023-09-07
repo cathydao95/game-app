@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("HI");
+  res.send("Hello, Cathy");
 });
 
 app.get("/api/trivia", (req, res) => {
