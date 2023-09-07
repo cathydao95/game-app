@@ -2,8 +2,13 @@ import { useState } from "react";
 import Questions from "./components/Questions";
 
 function App() {
-  // const [category, setCategory] = useState();
-  // const [difficulty, setDifficulty] = useState();
+  const [options, setOptions] = useState({
+    category: "general",
+    difficulty: "easy",
+  });
+  const [quiz, setQuiz] = useState();
+  const [correctAnswers, setCorrectAnswers] = useState([]);
+
   const categories = {
     general: 9,
     television: 14,
@@ -11,11 +16,6 @@ function App() {
     celebrities: 26,
     history: 23,
   };
-  const [options, setOptions] = useState({
-    category: "general",
-    difficulty: "easy",
-  });
-  const [quiz, setQuiz] = useState();
 
   const selectOptions = (e) => {
     setOptions((prevState) => {
@@ -36,10 +36,19 @@ function App() {
     console.log(url);
     const response = await fetch(url);
     const quizData = await response.json();
+    console.log("quizData", quizData);
     console.log(quizData.data.results);
+    // get correct answers from questions
+    let correctArray = [];
+    quizData.data.results.map((question) =>
+      correctArray.push(question.correct_answer)
+    );
+    // set quiz and correct answers array
     setQuiz(quizData.data.results);
+    setCorrectAnswers(correctArray);
   };
-  console.log("quiz", quiz);
+
+  console.log("quiz", quiz, "correct", correctAnswers);
   return (
     <>
       <h1>Trivia</h1>
@@ -63,7 +72,7 @@ function App() {
           <button onClick={getQuizQuestions}>Start Playing</button>
         </form>
       </div>
-      {quiz && <Questions quiz={quiz} />}
+      {quiz && <Questions quiz={quiz} correctAnswers={correctAnswers} />}
     </>
   );
 }
