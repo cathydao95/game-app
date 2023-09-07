@@ -7,9 +7,9 @@ function App() {
     category: "general",
     difficulty: "easy",
   });
-  const [isPlaying, setIsPlaying] = useState(false);
   const [quiz, setQuiz] = useState();
   const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // get code for categories
   const categories = {
@@ -38,7 +38,6 @@ function App() {
         categories[options.category]
       }&difficulty=${options.difficulty}&type=multiple`;
     }
-    console.log(url);
     const response = await fetch(url);
     const quizData = await response.json();
     // get correct answers from questions
