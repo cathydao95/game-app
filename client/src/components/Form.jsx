@@ -22,7 +22,7 @@ const Form = ({ selectOptions, getQuizQuestions }) => {
           <option value="any">Any Category</option>
         </select>
         <label className="categoryTitle" htmlFor="difficulty">
-          Select Difficulty
+          Select Difficulty:
         </label>
         <select
           className="quizOption"
