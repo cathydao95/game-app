@@ -7,7 +7,6 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
   const [score, setScore] = useState(0);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
-  console.log(quiz);
   // RANDOMIZE ANSWERS
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -35,6 +34,7 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
     return cleanedText;
   }
 
+  // WHEN QUIZ IS CHANGED, RANDOMIZE QUESTION ANSWERS
   useEffect(() => {
     let answers = quiz.map((quizQuestion) => {
       const { correct_answer, incorrect_answers } = quizQuestion;
@@ -59,7 +59,6 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
   // WHEN USER SUBMITS QUIZ, CHECK ANSWERS
   const checkQuizAnswers = () => {
     if (guesses.every((guess) => guess !== null)) {
-      console.log(guesses);
       const checkGuesses = guesses.map((guess, index) => {
         return { ...guess, isCorrect: guess.guess === correctAnswers[index] };
       });
@@ -82,10 +81,11 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
   const resetQuiz = () => {
     setIsPlaying(false);
   };
+
   return (
     <div>
       <div className="quizContainer">
-        {/* get index of question to set correct answer index */}
+        {/* USE INDEX TO SET CORRECT ANSWER FOR THAT QUESTION*/}
         {randomizedAnswers.map((answers, index) => {
           return (
             <div key={index}>
@@ -94,15 +94,16 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
               </h3>
               {quizSubmitted && (
                 <p className="correctAnswer">
-                  Correct Answer:{" "}
+                  Correct Answer:
                   {removeHtmlEntities(quiz[index].correct_answer)}
                 </p>
               )}
               <div>
                 <ul className="answersContainer">
                   {answers.map((answer) => {
-                    // if answer is equal to index in guess array, isSelected is true -- to use for classNames
+                    // IF CURRENT ANSWER IS EQUAL TO ELEMENT IN GUESSSES ARRAY (INDEX), SET ISSELECTED TO TRUE -- to be used for class names
                     const isSelected = guesses[index]?.guess === answer;
+                    // IF GUESS IS CORRECT AND CURRENT ANSWER IS EQUAL TO ELEMENT IN GUESSES ARRAY, SET ISCORRECT TO TRUE -- to be used for class names
                     const isCorrect =
                       guesses[index]?.isCorrect &&
                       guesses[index]?.guess === answer;
@@ -111,12 +112,15 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
                       <button
                         key={answer}
                         data-answer={answer}
+                        // IF ISSELECTED IS TRUE, GIVE CLASS NAME OF "GUESS"
+                        // IF IS CORRECT GIVE A CLASS NAME OF "CORRECT"
+                        // IF QUIZ HAS BEEN SUBMITTED, IS SELECTED, AND IS NOT CORRECT< GIVE CLASS NAME OF 'INCORRECT"
                         className={`answerBtn ${isSelected ? "guess" : ""}  ${
                           isCorrect
                             ? "correct"
                             : quizSubmitted && isSelected && !isCorrect
                             ? "incorrect"
-                            : ""
+                            : null
                         }  `}
                         onClick={(event) => selectGuess(event, index)}
                       >
