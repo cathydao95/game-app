@@ -1,10 +1,4 @@
-.gold {
-  background-color: gold;
-}
-.green {
-  background-color: green;
-}
-
-.red {
-  background-color: red;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 2rem 5rem;
 }
