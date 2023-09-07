@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import "./Questions.css";
 
-const Questions = ({ quiz, correctAnswers }) => {
+const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
   const [guesses, setGuesses] = useState(Array(quiz.length).fill(null));
   const [randomizedAnswers, setRandomizedAnswers] = useState([]);
   const [score, setScore] = useState(0);
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
 
+  console.log(quiz);
   // RANDOMIZE ANSWERS
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -24,23 +27,15 @@ const Questions = ({ quiz, correctAnswers }) => {
     setRandomizedAnswers(answers);
   }, [quiz]);
 
-  console.log("randomAnswers", randomizedAnswers);
-
   // WHEN USER CLICKS ON AN ANSWER, RUN SELECTGUESS FUNCTION
   const selectGuess = (e, index) => {
-    // console.log(e.target.dataset.answer);
     let guess = e.target.dataset.answer;
-    // console.log(index);
-    // setGuesses((prevGuesses) => {
-    //   const newGuesses = [...prevGuesses];
-    //   newGuesses[index] = guess;
-    //   return newGuesses;
-    // });
-    setGuesses((prevGuesses) => {
-      const newGuesses = [...prevGuesses];
-      newGuesses[index] = { guess: guess };
-      return newGuesses;
-    });
+    !quizSubmitted &&
+      setGuesses((prevGuesses) => {
+        const newGuesses = [...prevGuesses];
+        newGuesses[index] = { guess: guess };
+        return newGuesses;
+      });
   };
 
   // WHEN USER SUBMITS QUIZ, CHECK ANSWERS
@@ -48,15 +43,10 @@ const Questions = ({ quiz, correctAnswers }) => {
     if (guesses.every((guess) => guess !== null)) {
       console.log(guesses);
       const checkGuesses = guesses.map((guess, index) => {
-        console.log(
-          "tdoes this work",
-          guess,
-          correctAnswers[index],
-          guess === correctAnswers[index]
-        );
         return { ...guess, isCorrect: guess.guess === correctAnswers[index] };
       });
       setGuesses(checkGuesses);
+      setQuizSubmitted(true);
       setScore(
         guesses.reduce((acc, guess, index) => {
           if (guess.guess === correctAnswers[index]) {
@@ -70,7 +60,10 @@ const Questions = ({ quiz, correctAnswers }) => {
     }
   };
 
-  console.log("GUESSES", guesses);
+  // RESET QUIZ
+  const resetQuiz = () => {
+    setIsPlaying(false);
+  };
   return (
     <div>
       <div>
@@ -78,9 +71,14 @@ const Questions = ({ quiz, correctAnswers }) => {
         {randomizedAnswers.map((answers, index) => {
           return (
             <div key={index}>
-              <h3>{quiz[index].question}</h3>
+              <h3 className="question">{quiz[index].question}</h3>
+              {quizSubmitted && (
+                <p className="correctAnswer">
+                  Correct Answer: {quiz[index].correct_answer}
+                </p>
+              )}
               <div>
-                <ul>
+                <ul className="answersContainer">
                   {answers.map((answer) => {
                     // if answer is equal to index in guess array, isSelected is true -- to use for classNames
                     const isSelected = guesses[index]?.guess === answer;
@@ -92,8 +90,12 @@ const Questions = ({ quiz, correctAnswers }) => {
                       <button
                         key={answer}
                         data-answer={answer}
-                        className={`${isSelected ? "gold" : ""} ${
-                          isCorrect ? "green" : ""
+                        className={`answerBtn ${isSelected ? "guess" : ""}  ${
+                          isCorrect
+                            ? "correct"
+                            : quizSubmitted && isSelected && !isCorrect
+                            ? "incorrect"
+                            : ""
                         }  `}
                         onClick={(event) => selectGuess(event, index)}
                       >
@@ -107,8 +109,27 @@ const Questions = ({ quiz, correctAnswers }) => {
           );
         })}
       </div>
-      <button onClick={checkQuizAnswers}>Submit Answers</button>
-      <h3>Score: {score}</h3>
+
+      <div className="btnContainer">
+        {quizSubmitted ? (
+          <button className="btn" onClick={resetQuiz}>
+            Play Again
+          </button>
+        ) : (
+          <button
+            className="btn"
+            onClick={!quizSubmitted ? checkQuizAnswers : null}
+          >
+            Submit Answers
+          </button>
+        )}
+      </div>
+
+      {quizSubmitted && (
+        <div className="scoreContainer">
+          <h3 className="score">Score: {score}/5</h3>
+        </div>
+      )}
     </div>
   );
 };
