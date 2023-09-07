@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Questions from "./components/Questions";
-import Form from "./components/Form";
+import QuizSettings from "./components/QuizSettings";
 
 function App() {
   const [options, setOptions] = useState({
@@ -9,7 +9,7 @@ function App() {
   });
   const [quiz, setQuiz] = useState();
   const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [startQuiz, setStartQuiz] = useState(false);
 
   // get code for categories
   const categories = {
@@ -39,27 +39,26 @@ function App() {
     const response = await fetch(url);
     const quizData = await response.json();
     // get correct answers from questions
-    let correctArray = [];
-    quizData.data.results.map((question) =>
-      correctArray.push(question.correct_answer)
+    let correctArray = quizData.data.results.map(
+      (question) => question.correct_answer
     );
     // set quiz and correct answers array
     setQuiz(quizData.data.results);
     setCorrectAnswers(correctArray);
-    setIsPlaying(true);
+    setStartQuiz(true);
   };
 
   return (
     <>
       <h1>Trivia</h1>
-      {isPlaying ? (
+      {startQuiz ? (
         <Questions
           quiz={quiz}
           correctAnswers={correctAnswers}
-          setIsPlaying={setIsPlaying}
+          setStartQuiz={setStartQuiz}
         />
       ) : (
-        <Form
+        <QuizSettings
           selectOptions={selectOptions}
           getQuizQuestions={getQuizQuestions}
         />
