@@ -56,7 +56,7 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
         }, 0)
       );
     } else {
-      console.log("please answer every question");
+      alert("please answer every question");
     }
   };
 
@@ -66,7 +66,7 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
   };
   return (
     <div>
-      <div>
+      <div className="quizContainer">
         {/* get index of question to set correct answer index */}
         {randomizedAnswers.map((answers, index) => {
           return (
@@ -109,7 +109,11 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
           );
         })}
       </div>
-
+      {quizSubmitted && (
+        <div className="scoreContainer">
+          <h3 className="score">Score: {score}/5</h3>
+        </div>
+      )}
       <div className="btnContainer">
         {quizSubmitted ? (
           <button className="btn" onClick={resetQuiz}>
@@ -124,12 +128,6 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
           </button>
         )}
       </div>
-
-      {quizSubmitted && (
-        <div className="scoreContainer">
-          <h3 className="score">Score: {score}/5</h3>
-        </div>
-      )}
     </div>
   );
 };
