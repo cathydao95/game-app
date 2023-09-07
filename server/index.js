@@ -15,10 +15,13 @@ app.get("/", (req, res) => {
 app.get("/api/trivia", (req, res) => {
   const params = new URLSearchParams({
     amount: "5",
-    category: req.query.category,
     difficulty: req.query.difficulty,
     type: "multiple",
   });
+
+  if (req.query.category) {
+    params.category = req.query.category;
+  }
   const url = `https://opentdb.com/api.php?${params}`;
   console.log("url", url);
 
