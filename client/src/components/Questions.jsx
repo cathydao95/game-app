@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Questions.css";
 
-const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
+const Questions = ({ quiz, correctAnswers, setStartQuiz }) => {
   const [guesses, setGuesses] = useState(Array(quiz.length).fill(null));
   const [randomizedAnswers, setRandomizedAnswers] = useState([]);
   const [score, setScore] = useState(0);
@@ -51,7 +51,7 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
     !quizSubmitted &&
       setGuesses((prevGuesses) => {
         const newGuesses = [...prevGuesses];
-        newGuesses[index] = { guess: guess };
+        newGuesses[index] = { guess };
         return newGuesses;
       });
   };
@@ -79,7 +79,7 @@ const Questions = ({ quiz, correctAnswers, setIsPlaying }) => {
 
   // RESET QUIZ
   const resetQuiz = () => {
-    setIsPlaying(false);
+    setStartQuiz(false);
   };
 
   return (
