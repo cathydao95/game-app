@@ -1,9 +1,10 @@
 import React from "react";
+import "./Form.css";
 
 const Form = ({ selectOptions, getQuizQuestions }) => {
   return (
     <div>
-      <form>
+      <form className="settingsForm">
         <label htmlFor="category">Select a Category:</label>
         <select id="category" name="category" onChange={selectOptions}>
           <option value="general">General Knowledge</option>
